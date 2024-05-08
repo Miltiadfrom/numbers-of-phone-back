@@ -3,6 +3,8 @@ import datetime
 from .models import Subscriber, PhoneNumber, Payment
 from .database import Base, engine, session
 
+from sqlalchemy import update
+
 
 def start():
     Base.metadata.drop_all(engine)
@@ -45,6 +47,11 @@ def to_delete_phone_by_name(number):
 
     return phone.to_json()
 
+def find_user_by_id(sub_id):
+    subscriber = session.query(Subscriber).where(Subscriber.id == sub_id).first()
+
+    return subscriber.to_json()
+
 def to_add_new_subscriber(data):
     new_sub = Subscriber(type=data["type"], name=data["name"], address=data["address"])
 
@@ -60,3 +67,12 @@ def to_delete_subscriber(sub_id):
     session.commit()
 
     return subsriber.to_json()
+
+def to_change_user_by_id(sub_id, data):
+    updated_sub = update(Subscriber).where(Subscriber.id == int(sub_id)).values(data)
+    res = session.execute(updated_sub)
+    session.commit()
+
+    subscriber = session.query(Subscriber).where(Subscriber.id == sub_id).one()
+
+    return subscriber.to_json()

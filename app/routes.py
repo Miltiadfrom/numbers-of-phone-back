@@ -4,7 +4,9 @@ from app.helpers import (find_users,
                          to_add_phone_by_sub,
                          to_delete_phone_by_name,
                          to_delete_subscriber,
-                         to_add_new_subscriber)
+                         to_add_new_subscriber,
+                         find_user_by_id,
+                         to_change_user_by_id)
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -20,17 +22,23 @@ def hello_world():
 
 @app.route('/users', methods=['GET', "POST"])
 def get_users():
-    result = None
     if request.method == "GET":
         result = find_users()
-    else:
+    elif request.method == "POST":
         data = request.get_json()
         result = to_add_new_subscriber(data)
     return _response_func(result)
 
-@app.route('/users/<sub_id>', methods=["DELETE"])
+@app.route('/users/<sub_id>', methods=["GET", "DELETE", "PUT"])
 def delete_user_by_id(sub_id):
-    result = to_delete_subscriber(sub_id)
+    if request.method == "DELETE":
+        result = to_delete_subscriber(sub_id)
+    elif request.method == "GET":
+        result = find_user_by_id(sub_id)
+    elif request.method == "PUT":
+        data = request.get_json()
+        result = to_change_user_by_id(sub_id, data)
+
     return _response_func(result)
 
 
