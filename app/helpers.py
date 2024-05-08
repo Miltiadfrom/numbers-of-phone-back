@@ -10,6 +10,7 @@ def start():
 
     objects = [
         Subscriber(type="физлицо", name="Слава", address="улица пушкина"),
+        Subscriber(type="физлицо", name="Слава2", address="улица пушкина2"),
         PhoneNumber(subscriber_id=1, is_active=True, number="9393992329"),
         Payment(phone_number_id=1, date=datetime.datetime.now(), amount=100, subscriber_id=1)
     ]
@@ -43,3 +44,11 @@ def to_delete_phone_by_name(number):
     session.commit()
 
     return phone.to_json()
+
+def to_delete_subscriber(sub_id):
+    subsriber = session.query(Subscriber).where(Subscriber.id == sub_id).one()
+
+    session.delete(subsriber)
+    session.commit()
+
+    return subsriber.to_json()
