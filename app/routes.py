@@ -6,7 +6,9 @@ from app.helpers import (find_users,
                          to_delete_subscriber,
                          to_add_new_subscriber,
                          find_user_by_id,
-                         to_change_user_by_id)
+                         to_change_user_by_id,
+                         to_add_new_payment,
+                         find_payments_by_sub)
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -21,7 +23,7 @@ def hello_world():
     return 'Hello World!'
 
 @app.route('/users', methods=['GET', "POST"])
-def get_users():
+def hook_users():
     if request.method == "GET":
         result = find_users()
     elif request.method == "POST":
@@ -30,7 +32,7 @@ def get_users():
     return _response_func(result)
 
 @app.route('/users/<sub_id>', methods=["GET", "DELETE", "PUT"])
-def delete_user_by_id(sub_id):
+def hook_user_by_id(sub_id):
     if request.method == "DELETE":
         result = to_delete_subscriber(sub_id)
     elif request.method == "GET":
@@ -57,4 +59,16 @@ def add_phone_by_sub_id():
 @app.route('/phones/<phone_number>', methods=['DELETE'])
 def delete_phone_by_name(phone_number):
     result = to_delete_phone_by_name(phone_number)
+    return _response_func(result)
+
+
+@app.route('/payments/<sub_id>', methods=["GET"])
+def get_payments_by_sub_id(sub_id):
+    result = find_payments_by_sub(sub_id)
+    return _response_func(result)
+
+@app.route('/payments', methods=["POST"])
+def add_new_payment_by_sub_id():
+    data = request.get_json()
+    result = to_add_new_payment(data)
     return _response_func(result)

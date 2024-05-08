@@ -76,3 +76,15 @@ def to_change_user_by_id(sub_id, data):
     subscriber = session.query(Subscriber).where(Subscriber.id == sub_id).one()
 
     return subscriber.to_json()
+
+def find_payments_by_sub(sub_id):
+    payments = session.query(Payment).filter(Payment.subscriber_id == sub_id).all()
+    return [payment.to_json() for payment in payments]
+
+def to_add_new_payment(data):
+    new_payment = Payment(phone_number_id=data["phone_number_id"], date=datetime.datetime.now(), amount=data["amount"], subscriber_id=data["subscriber_id"])
+
+    session.add(new_payment)
+    session.commit()
+
+    return new_payment.to_json()
