@@ -18,10 +18,6 @@ def _response_func(data):
     response = Response(json_string, content_type="application/json; charset=utf-8")
     return response, 200
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
-
 @app.route('/users', methods=['GET', "POST"])
 def hook_users():
     if request.method == "GET":
