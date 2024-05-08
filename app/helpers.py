@@ -45,6 +45,14 @@ def to_delete_phone_by_name(number):
 
     return phone.to_json()
 
+def to_add_new_subscriber(data):
+    new_sub = Subscriber(type=data["type"], name=data["name"], address=data["address"])
+
+    session.add(new_sub)
+    session.commit()
+
+    return new_sub.to_json()
+
 def to_delete_subscriber(sub_id):
     subsriber = session.query(Subscriber).where(Subscriber.id == sub_id).one()
 

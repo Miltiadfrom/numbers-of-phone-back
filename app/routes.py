@@ -3,7 +3,8 @@ from app.helpers import (find_users,
                          find_phones_by_sub,
                          to_add_phone_by_sub,
                          to_delete_phone_by_name,
-                         to_delete_subscriber )
+                         to_delete_subscriber,
+                         to_add_new_subscriber)
 
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
@@ -17,15 +18,21 @@ def _response_func(data):
 def hello_world():
     return 'Hello World!'
 
-@app.route('/users', methods=['GET'])
+@app.route('/users', methods=['GET', "POST"])
 def get_users():
-    result = find_users()
+    result = None
+    if request.method == "GET":
+        result = find_users()
+    else:
+        data = request.get_json()
+        result = to_add_new_subscriber(data)
     return _response_func(result)
 
 @app.route('/users/<sub_id>', methods=["DELETE"])
 def delete_user_by_id(sub_id):
     result = to_delete_subscriber(sub_id)
     return _response_func(result)
+
 
 @app.route('/phones/<sub_id>', methods=['GET'])
 def get_phones_by_sub_id(sub_id):
