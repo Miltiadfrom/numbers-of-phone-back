@@ -11,7 +11,7 @@ def start():
     objects = [
         Subscriber(type="физлицо", name="Слава", address="улица пушкина"),
         PhoneNumber(subscriber_id=1, is_active=True, number="9393992329"),
-        Payment(phone_number_id=1, date=datetime.datetime.now(), amount=100)
+        Payment(phone_number_id=1, date=datetime.datetime.now(), amount=100, subscriber_id=1)
     ]
 
     session.bulk_save_objects(objects)
