@@ -1,7 +1,7 @@
 import datetime
 
-from .models import Subscriber, PhoneNumber, Payment
-from .database import Base, engine, session
+from app.models import Subscriber, PhoneNumber, Payment
+from app.database import Base, engine, session
 
 from sqlalchemy import update
 
