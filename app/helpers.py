@@ -79,7 +79,12 @@ def to_change_user_by_id(sub_id, data):
 
 def find_payments_by_sub(sub_id):
     payments = session.query(Payment).filter(Payment.subscriber_id == sub_id).all()
-    return [payment.to_json() for payment in payments]
+    result = []
+    for payment in payments:
+        data = payment.to_json()
+        data["phone_number"] = payment.phone_number.number
+        result.append(data)
+    return result
 
 def to_add_new_payment(data):
     new_payment = Payment(phone_number_id=data["phone_number_id"], date=datetime.datetime.now(), amount=data["amount"], subscriber_id=data["subscriber_id"])

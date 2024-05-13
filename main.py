@@ -3,4 +3,4 @@ from app.helpers import start
 
 if __name__ == '__main__':
     start()
-    app.run()
+    app.run(port="8000")
