@@ -7,7 +7,6 @@ from sqlalchemy import update
 
 
 def start():
-    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
     objects = [
