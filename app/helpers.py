@@ -9,15 +9,6 @@ from sqlalchemy import update
 def start():
     Base.metadata.create_all(engine)
 
-    objects = [
-        Subscriber(type="физлицо", name="Пушка", address="улица пушкина"),
-        Subscriber(type="физлицо", name="Ленский", address="улица пушкина2"),
-        PhoneNumber(subscriber_id=1, is_active=True, number="9393992329"),
-        Payment(phone_number_id=1, date=datetime.datetime.now(), amount=100, subscriber_id=1)
-    ]
-
-    session.bulk_save_objects(objects)
-    session.commit()
 
 def find_users():
     result = []
