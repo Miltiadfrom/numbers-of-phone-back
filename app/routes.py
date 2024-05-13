@@ -1,4 +1,6 @@
+
 from flask import Flask, json, Response, request
+from flask_cors import CORS
 from app.helpers import (find_users,
                          find_phones_by_sub,
                          to_add_phone_by_sub,
@@ -13,6 +15,7 @@ from app.helpers import (find_users,
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
+CORS(app)
 def _response_func(data):
     json_string = json.dumps({"result": data}, ensure_ascii=False)
     response = Response(json_string, content_type="application/json; charset=utf-8")
